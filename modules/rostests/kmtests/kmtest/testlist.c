@@ -24,7 +24,11 @@ KMT_TESTFUNC Test_IoReadWrite;
 KMT_TESTFUNC Test_MmMapLockedPagesSpecifyCache;
 KMT_TESTFUNC Test_NtCreateSection;
 KMT_TESTFUNC Test_NtSystemDebugControl;
+KMT_TESTFUNC Test_PoIdle;
 KMT_TESTFUNC Test_PoIrp;
+KMT_TESTFUNC Test_PoPowerSetting;
+KMT_TESTFUNC Test_PoPowerState;
+KMT_TESTFUNC Test_PoPowerRequest;
 KMT_TESTFUNC Test_RtlAvlTree;
 KMT_TESTFUNC Test_RtlCaptureContext;
 KMT_TESTFUNC Test_RtlException;
@@ -60,7 +64,11 @@ const KMT_TEST TestList[] =
     { "MmMapLockedPagesSpecifyCache", Test_MmMapLockedPagesSpecifyCache },
     { "NtCreateSection",              Test_NtCreateSection },
     { "NtSystemDebugControl",         Test_NtSystemDebugControl },
+    { "PoIdle",                       Test_PoIdle },
     { "PoIrp",                        Test_PoIrp },
+    { "PoPowerSetting",               Test_PoPowerSetting },
+    { "PoPowerState",                 Test_PoPowerState },
+    { "PoPowerRequest",               Test_PoPowerRequest },
     { "RtlAvlTree",                   Test_RtlAvlTree },
     { "RtlException",                 Test_RtlException },
     { "RtlIntSafe",                   Test_RtlIntSafe },

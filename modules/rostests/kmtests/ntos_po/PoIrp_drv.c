@@ -6,7 +6,7 @@
  */
 
 #include <kmt_test.h>
-#include "PoIrp.h"
+#include "po.h"
 
 static PDRIVER_OBJECT TestDriverObject;
 static KMT_MESSAGE_HANDLER TestMessageHandler;

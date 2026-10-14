@@ -178,7 +178,11 @@ list(APPEND KMTEST_SOURCE
     ntos_kd/NtSystemDebugControl.c
     ntos_mm/MmMapLockedPagesSpecifyCache_user.c
     ntos_mm/NtCreateSection_user.c
+    ntos_po/PoIdle_user.c
     ntos_po/PoIrp_user.c
+    ntos_po/PoPowerSetting_user.c
+    ntos_po/PoPowerState_user.c
+    ntos_po/PoPowerRequest_user.c
     tcpip/TcpIp_user.c
     ${COMMON_SOURCE}
 
@@ -207,7 +211,11 @@ add_dependencies(kmtest_drivers
     kernel32_drv
     mmmaplockedpagesspecifycache_drv
     ntcreatesection_drv
+    poidle_drv
     poirp_drv
+    popowersetting_drv
+    popowerstate_drv
+    popowerrequest_drv
     tcpip_drv
     cccopyread_drv
     ccmapdata_drv)
