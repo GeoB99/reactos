@@ -15,3 +15,18 @@ add_importlibs(poirp_drv ntoskrnl hal)
 target_compile_definitions(poirp_drv PRIVATE KMT_STANDALONE_DRIVER)
 #add_pch(poirp_drv ../include/kmt_test.h)
 add_rostests_file(TARGET poirp_drv)
+
+#
+# PoPowerSetting
+#
+list(APPEND POPOWERSETTING_DRV_SOURCE
+    ../kmtest_drv/kmtest_standalone.c
+    PoPowerSetting_drv.c)
+
+add_library(popowersetting_drv MODULE ${POPOWERSETTING_DRV_SOURCE})
+set_module_type(popowersetting_drv kernelmodedriver)
+target_link_libraries(popowersetting_drv kmtest_printf poguid ${PSEH_LIB})
+add_importlibs(popowersetting_drv ntoskrnl hal)
+target_compile_definitions(popowersetting_drv PRIVATE KMT_STANDALONE_DRIVER)
+#add_pch(popowersetting_drv ../include/kmt_test.h)
+add_rostests_file(TARGET popowersetting_drv)

@@ -6,7 +6,7 @@
  */
 
 #include <kmt_test.h>
-#include "PoIrp.h"
+#include "Po.h"
 
 START_TEST(PoIrp)
 {

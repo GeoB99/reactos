@@ -179,6 +179,7 @@ list(APPEND KMTEST_SOURCE
     ntos_mm/MmMapLockedPagesSpecifyCache_user.c
     ntos_mm/NtCreateSection_user.c
     ntos_po/PoIrp_user.c
+    ntos_po/PoPowerSetting_user.c
     tcpip/TcpIp_user.c
     ${COMMON_SOURCE}
 
@@ -208,6 +209,7 @@ add_dependencies(kmtest_drivers
     mmmaplockedpagesspecifycache_drv
     ntcreatesection_drv
     poirp_drv
+    popowersetting_drv
     tcpip_drv
     cccopyread_drv
     ccmapdata_drv)
