@@ -426,11 +426,6 @@ SepAllowAccessObjectTypeList(
  * A pointer to a security identifier that represents a principal. A principal
  * identifies a user object which is associated with its own security descriptor.
  *
- * @param[in] GenericMapping
- * A pointer to a generic mapping that is associated with the object in question
- * being checked for access. If certain set of desired access rights have
- * a generic access right, this parameter is needed to map generic rights.
- *
  * @param[in] ObjectTypeList
  * A pointer to a list array of object types. If such array is provided to the
  * function, the algorithm will perform a different approach by doing analysis
@@ -465,7 +460,6 @@ SepAnalyzeAcesFromDacl(
     _In_ PACCESS_TOKEN PrimaryAccessToken,
     _In_ BOOLEAN IsTokenRestricted,
     _In_opt_ PSID PrincipalSelfSid,
-    _In_ PGENERIC_MAPPING GenericMapping,
     _In_opt_ POBJECT_TYPE_LIST_INTERNAL ObjectTypeList,
     _In_ ULONG ObjectTypeListLength,
     _In_ BOOLEAN UseResultList,
@@ -525,12 +519,6 @@ SepAnalyzeAcesFromDacl(
                             /* Get this access right from the ACE */
                             Access = CurrentAce->AccessMask;
 
-                            /* Map this access right if it has a generic mask right */
-                            if ((Access & GENERIC_ACCESS) && GenericMapping)
-                            {
-                                RtlMapGenericMask(&Access, GenericMapping);
-                            }
-
                             /* Deny access rights that have not been granted yet */
                             AccessCheckRights->DeniedAccessRights |= (Access & ~AccessCheckRights->GrantedAccessRights);
                             DPRINT("DeniedAccessRights 0x%08lx\n", AccessCheckRights->DeniedAccessRights);
@@ -546,12 +534,6 @@ SepAnalyzeAcesFromDacl(
                         {
                             /* Get this access right from the ACE */
                             Access = CurrentAce->AccessMask;
-
-                            /* Map this access right if it has a generic mask right */
-                            if ((Access & GENERIC_ACCESS) && GenericMapping)
-                            {
-                                RtlMapGenericMask(&Access, GenericMapping);
-                            }
 
                             /* Grant access rights that have not been denied yet */
                             AccessCheckRights->GrantedAccessRights |= (Access & ~AccessCheckRights->DeniedAccessRights);
@@ -569,12 +551,6 @@ SepAnalyzeAcesFromDacl(
                         {
                             /* Get this access right from the ACE */
                             Access = CurrentAce->AccessMask;
-
-                            /* Map this access right if it has a generic mask right */
-                            if ((Access & GENERIC_ACCESS) && GenericMapping)
-                            {
-                                RtlMapGenericMask(&Access, GenericMapping);
-                            }
 
                             /* If no list was passed treat this is as ACCESS_DENIED_ACE_TYPE */
                             if (!ObjectTypeList && !ObjectTypeListLength)
@@ -618,12 +594,6 @@ SepAnalyzeAcesFromDacl(
                         {
                             /* Get this access right from the ACE */
                             Access = CurrentAce->AccessMask;
-
-                            /* Map this access right if it has a generic mask right */
-                            if ((Access & GENERIC_ACCESS) && GenericMapping)
-                            {
-                                RtlMapGenericMask(&Access, GenericMapping);
-                            }
 
                             /* If no list was passed treat this is as ACCESS_ALLOWED_ACE_TYPE */
                             if (!ObjectTypeList && !ObjectTypeListLength)
@@ -713,12 +683,6 @@ SepAnalyzeAcesFromDacl(
                             /* Get this access right from the ACE */
                             Access = CurrentAce->AccessMask;
 
-                            /* Map this access right if it has a generic mask right */
-                            if ((Access & GENERIC_ACCESS) && GenericMapping)
-                            {
-                                RtlMapGenericMask(&Access, GenericMapping);
-                            }
-
                             /*
                              * The caller requests a right that cannot be
                              * granted. Access is implicitly denied for
@@ -743,12 +707,6 @@ SepAnalyzeAcesFromDacl(
                             /* Get this access right from the ACE */
                             Access = CurrentAce->AccessMask;
 
-                            /* Map this access right if it has a generic mask right */
-                            if ((Access & GENERIC_ACCESS) && GenericMapping)
-                            {
-                                RtlMapGenericMask(&Access, GenericMapping);
-                            }
-
                             /* Remove the remaining rights */
                             DPRINT("RemainingAccessRights 0x%08lx  Access 0x%08lx\n", AccessCheckRights->RemainingAccessRights, Access);
                             AccessCheckRights->RemainingAccessRights &= ~Access;
@@ -769,12 +727,6 @@ SepAnalyzeAcesFromDacl(
                         {
                             /* Get this access right from the ACE */
                             Access = CurrentAce->AccessMask;
-
-                            /* Map this access right if it has a generic mask right */
-                            if ((Access & GENERIC_ACCESS) && GenericMapping)
-                            {
-                                RtlMapGenericMask(&Access, GenericMapping);
-                            }
 
                             /* If no list was passed treat this is as ACCESS_DENIED_ACE_TYPE */
                             if (!ObjectTypeList && !ObjectTypeListLength)
@@ -819,12 +771,6 @@ SepAnalyzeAcesFromDacl(
                         {
                             /* Get this access right from the ACE */
                             Access = CurrentAce->AccessMask;
-
-                            /* Map this access right if it has a generic mask right */
-                            if ((Access & GENERIC_ACCESS) && GenericMapping)
-                            {
-                                RtlMapGenericMask(&Access, GenericMapping);
-                            }
 
                             /* If no list was passed treat this is as ACCESS_ALLOWED_ACE_TYPE */
                             if (!ObjectTypeList && !ObjectTypeListLength)
@@ -992,11 +938,6 @@ SepAccessCheckWorker(
         goto ReturnCommonStatus;
     }
 
-    /* Map given accesses */
-    RtlMapGenericMask(&DesiredAccess, GenericMapping);
-    if (PreviouslyGrantedAccess)
-        RtlMapGenericMask(&PreviouslyGrantedAccess, GenericMapping);
-
     /* Initialize remaining access rights */
     RemainingAccess = DesiredAccess;
 
@@ -1113,7 +1054,6 @@ SepAccessCheckWorker(
                                PrimaryAccessToken,
                                FALSE,
                                PrincipalSelfSid,
-                               GenericMapping,
                                ObjectTypeList,
                                ObjectTypeListLength,
                                UseResultList,
@@ -1132,7 +1072,6 @@ SepAccessCheckWorker(
                                    PrimaryAccessToken,
                                    TRUE,
                                    PrincipalSelfSid,
-                                   GenericMapping,
                                    ObjectTypeList,
                                    ObjectTypeListLength,
                                    UseResultList,
@@ -1284,7 +1223,6 @@ SepAccessCheckWorker(
                            PrimaryAccessToken,
                            FALSE,
                            PrincipalSelfSid,
-                           GenericMapping,
                            ObjectTypeList,
                            ObjectTypeListLength,
                            UseResultList,
@@ -1341,7 +1279,6 @@ SepAccessCheckWorker(
                                PrimaryAccessToken,
                                TRUE,
                                PrincipalSelfSid,
-                               GenericMapping,
                                ObjectTypeList,
                                ObjectTypeListLength,
                                UseResultList,
